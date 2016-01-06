@@ -11,25 +11,27 @@ biuld方法：
 
 启动方法：
 -----------------
-docker run \
---volume=/:/rootfs:ro \
---volume=/var/run:/var/run:rw \
---volume=/sys:/sys:ro \
---volume=/home/work/log/cadvisor/:/home/work/uploadCadviosrData/log \
---volume=/var/lib/docker/:/var/lib/docker:ro \
---volume=/home/docker/containers:/home/docker/containers:ro \
---publish=18080:18080 \
---env Interval=60 \
---detach=true \
---name=micadvisor \
---net=host \
---restart=always \
-micadvisor:latest
+```bash
+    docker run \
+    --volume=/:/rootfs:ro \
+    --volume=/var/run:/var/run:rw \
+    --volume=/sys:/sys:ro \
+    --volume=/home/work/log/cadvisor/:/home/work/uploadCadviosrData/log \
+    --volume=/var/lib/docker/:/var/lib/docker:ro \
+    --volume=/home/docker/containers:/home/docker/containers:ro \
+    --publish=18080:18080 \
+    --env Interval=60 \
+    --detach=true \
+    --name=micadvisor \
+    --net=host \
+    --restart=always \
+    micadvisor:latest
+```
 
 注：
---volume=/sys:/sys:ro 此volume中包含docker容器监控所需要的重要内容，如/sys/fs/cgroup下的相关内容
---volume=/home/work/log/cadvisor/:/home/work/uploadCadviosrData/log \ 为日志内容路径
---env Interval=60 表示提取数据的间隔时间
+    --volume=/sys:/sys:ro 此volume中包含docker容器监控所需要的重要内容，如/sys/fs/cgroup下的相关内容
+    --volume=/home/work/log/cadvisor/:/home/work/uploadCadviosrData/log \ 为日志内容路径
+    --env Interval=60 表示提取数据的间隔时间
 
 采集的指标
 --------------------------
