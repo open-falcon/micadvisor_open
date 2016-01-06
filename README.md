@@ -1,6 +1,5 @@
 Docker container monitor plugin for Open-Falcon  Micadvisor-Open
 ------------------------------------
-------------------------------------
 描述
 ------------------
 micadvisor-open是基于open-falcon的docker容器资源监控插件，监控容器的cpu、内存、diskio以及网络io等，数据采集后上报到open-falcon
@@ -29,9 +28,11 @@ biuld方法：
 ```
 
 注：
+```
     --volume=/sys:/sys:ro 此volume中包含docker容器监控所需要的重要内容，如/sys/fs/cgroup下的相关内容
     --volume=/home/work/log/cadvisor/:/home/work/uploadCadviosrData/log \ 为日志内容路径
     --env Interval=60 表示提取数据的间隔时间
+```
 
 采集的指标
 --------------------------
