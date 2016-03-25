@@ -90,7 +90,7 @@ func getContainerId(cadvisorData string) string {
 func getEndPoint(DockerData string) string {
 	hostnameprefix := getBetween(DockerData, `"Hostname":"`, `",`)
 	hostnamesubfix := getBetween(DockerData, `"Domainname":"`, `",`)
-	hostname := hostnameprefix + hostnamesubfix
+	hostname := hostnameprefix + `.` + hostnamesubfix
 	return hostname
 }
 
