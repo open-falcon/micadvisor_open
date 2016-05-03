@@ -88,6 +88,11 @@ func getContainerId(cadvisorData string) string {
 }
 
 func getEndPoint(DockerData string) string {
+	//get endpoint from env first
+	endPoint := getBetween(DockerData, `"EndPoint=`, `",`)
+	if endPoint != "" {
+		return endPoint
+	}
 	filepath := getBetween(DockerData, `"HostsPath":"`, `",`)
 	buf := make(map[int]string, 6)
 	inputFile, inputError := os.Open(filepath)
@@ -108,6 +113,7 @@ func getEndPoint(DockerData string) string {
 		buf[lineCounter] = inputString
 	}
 	hostname := strings.Split(buf[1], "	")[0]
+	hostname = strings.Replace(hostname, "\n", " ", -1)
 	return hostname
 }
 
