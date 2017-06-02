@@ -26,8 +26,12 @@ func getCpuNum(dockerdata string) {
 	}
 }
 
-func getTag() string {
+func getTag(DockerData string) string {
 	//FIXMI:some other message for container
+	tags := getBetween(DockerData, `"Tags=`, `",`)
+	if tags != "" {
+		return tags
+	}
 	return ""
 }
 

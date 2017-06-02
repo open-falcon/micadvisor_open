@@ -35,7 +35,7 @@ func pushData() {
 
 		getCpuNum(DockerData) //we need to give the container CPU ENV
 
-		tag := getTag() //recode some other message for a container
+		tag := getTag(DockerData) //recode some other message for a container
 
 		ausge, busge := getUsageData(cadvDataForOneContainer[k]) //get 2 usage because some metric recoding Incremental metric
 

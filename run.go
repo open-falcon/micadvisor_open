@@ -19,7 +19,7 @@ func main() {
 		Interval = time.Duration(tmp1) * time.Second
 	}
 
-	cmd := exec.Command("/home/work/uploadCadviosrData/cadvisor")
+	cmd := exec.Command("/home/work/uploadCadviosrData/cadvisor", "-port=18080")
 	if err = cmd.Start(); err != nil {
 		fmt.Println(err)
 		return
