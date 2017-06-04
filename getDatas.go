@@ -97,6 +97,11 @@ func getEndPoint(DockerData string) string {
 	if endPoint != "" {
 		return endPoint
 	}
+	//get docker name
+	docker_name := getBetween(DockerData, `"Name":"`, `",`)
+	if docker_name != "" {
+		return docker_name
+	}
 	filepath := getBetween(DockerData, `"HostsPath":"`, `",`)
 	buf := make(map[int]string, 6)
 	inputFile, inputError := os.Open(filepath)

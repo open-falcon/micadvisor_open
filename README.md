@@ -29,11 +29,13 @@ biuld方法：
 
 注：
 ```
-    容器的endpoint获取有两种方式:
+    容器的endpoint获取有三种方式:
     1,对被监控的容器传入env，EndPoint=myendpoint 方式；
-    2,通过获取被监控的容器的hosts文件的第一个ip地址
+    2,通过获取被监控容器运行时指定的--name
+    3,通过获取被监控的容器的hosts文件的第一个ip地址
     容器的tags获取方式：
-    对被监控的容器传入env，Tags=key=value 方式；
+    1,对被监控的容器传入env，Tags=key=value 方式；
+
     --volume=/sys:/sys:ro 此volume中包含docker容器监控所需要的重要内容，如/sys/fs/cgroup下的相关内容
     --volume=/home/work/log/cadvisor/:/home/work/uploadCadviosrData/log \ 为日志内容路径
     --env Interval=60 表示提取数据的间隔时间
