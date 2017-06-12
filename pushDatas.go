@@ -109,7 +109,8 @@ func pushNet(networkuage1, networkuage2, timestamp, tags, containerId, endpoint 
 
 func pushMem(memLimit, memoryusage, timestamp, tags, containerId, endpoint string) error {
 	LogRun("pushMem")
-	memUsageNum := getBetween(memoryusage, `"usage":`, `,"working_set"`)
+	//memUsageNum := getBetween(memoryusage, `"usage":`, `,"working_set"`)
+	memUsageNum := getBetween(memoryusage, `"usage":`, `,"cache"`)
 	fenzi, _ := strconv.ParseInt(memUsageNum, 10, 64)
 	fenmu, err := strconv.ParseInt(memLimit, 10, 64)
 	if err == nil {
