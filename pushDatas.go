@@ -130,7 +130,8 @@ func pushMem(memLimit, memoryusage, timestamp, tags, containerId, endpoint strin
 	//memHotUsageNum := getBetween(memoryusage, `"working_set":`, `,"container_data"`)
 	memHotUsageNum := getBetween(memoryusage, `"working_set":`, `,"failcnt"`)
 	fenzi, _ = strconv.ParseInt(memHotUsageNum, 10, 64)
-	memHotUsage := float64(fenzi) / float64(fenmu)
+	//memHotUsage := float64(fenzi) / float64(fenmu)
+	memHotUsage := float64(fenzi)
 	if err := pushIt(fmt.Sprint(memHotUsage), timestamp, "mem.memused.hot", tags, containerId, "GAUGE", endpoint); err != nil {
 		LogErr(err, "pushIt err in pushMem")
 	}
