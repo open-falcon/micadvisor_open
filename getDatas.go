@@ -97,7 +97,12 @@ func getEndPoint(DockerData string) string {
 	if endPoint != "" {
 		return endPoint
 	}
-	//get docker name
+	// get endpoint from env MESOS_TASK_ID
+	mesos_task_id := getBetween(DockerData, `"MESOS_TASK_ID=`, `",`)
+	if mesos_task_id != "" {
+		return mesos_task_id
+	}
+	//get docker run --name
 	docker_name := getBetween(DockerData, `"Name":"`, `",`)
 	if docker_name != "" {
 		return docker_name
