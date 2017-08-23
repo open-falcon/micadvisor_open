@@ -29,11 +29,15 @@ biuld方法：
 
 注：
 ```
-    容器的endpoint获取有三种方式:
+    容器的endpoint获取有四种方式:
+
     1,对被监控的容器传入env，EndPoint=myendpoint 方式；
-    2,通过获取被监控容器运行时指定的--name
-    3,通过获取被监控的容器的hosts文件的第一个ip地址
+    2,通过获取被监控容器运行时的MESOS_TASK_ID, 基于martahon mesos集群
+    3,通过获取被监控容器运行时指定的--name
+    4,通过获取被监控的容器的hosts文件的第一个ip地址
+
     容器的tags获取方式：
+
     1,对被监控的容器传入env，Tags=key=value 方式；
 
     --volume=/sys:/sys:ro 此volume中包含docker容器监控所需要的重要内容，如/sys/fs/cgroup下的相关内容

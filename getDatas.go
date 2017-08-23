@@ -100,7 +100,8 @@ func getEndPoint(DockerData string) string {
 	// get endpoint from env MESOS_TASK_ID
 	mesos_task_id := getBetween(DockerData, `"MESOS_TASK_ID=`, `",`)
 	if mesos_task_id != "" {
-		return mesos_task_id
+		// compatibility kamon push data
+		return strings.Replace(mesos_task_id, ".", "_", -1)
 	}
 	//get docker run --name
 	docker_name := getBetween(DockerData, `"Name":"`, `",`)
