@@ -146,6 +146,9 @@ func pushMem(memLimit, memoryusage, timestamp, tags, containerId, endpoint strin
 	}
 
 	failcnt := getBetween(memoryusage, `"failcnt":`, `,"container_data"`)
+	if err := pushIt(failcnt, timestamp, "mem.failcnt", tags, containerId, "GAUGE", endpoint); err != nil {
+		LogErr(err, "pushIt err in pushMem")
+	}
 	if err := pushIt(failcnt, timestamp, "mem.failcnt.1m.rate", tags, containerId, "COUNTER", endpoint); err != nil {
 		LogErr(err, "pushIt err in pushMem")
 	}
