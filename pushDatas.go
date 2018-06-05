@@ -118,7 +118,7 @@ func pushMem(memLimit, memoryusage, timestamp, tags, containerId, endpoint strin
 			LogErr(err, "pushIt err in pushMem")
 		}
 	}
-	if err := pushIt(fmt.Sprint(fenzi), timestamp, "mem.memused", tags, containerId, "GAUGE", endpoint); err != nil {
+	if err := pushIt(memUsageNum, timestamp, "mem.memused", tags, containerId, "GAUGE", endpoint); err != nil {
 		LogErr(err, "pushIt err in pushMem")
 	}
 
@@ -129,27 +129,28 @@ func pushMem(memLimit, memoryusage, timestamp, tags, containerId, endpoint strin
 	memHotUsageNum := getBetween(memoryusage, `"working_set":`, `,"container_data"`)
 	fenzi, _ = strconv.ParseInt(memHotUsageNum, 10, 64)
 	memHotUsagePercent := float64(fenzi) / float64(fenmu)
-	if err := pushIt(memHotUsagePercent, timestamp, "mem.memusedhot.percent", tags, containerId, "GAUGE", endpoint); err != nil {
+	if err := pushIt(fmt.Sprint(memHotUsagePercent), timestamp, "mem.memusedhot.percent", tags, containerId, "GAUGE", endpoint); err != nil {
 		LogErr(err, "pushIt err in pushMem")
 	}
-	if err := pushIt(fmt.Sprint(fenzi), timestamp, "mem.memused.hot", tags, containerId, "GAUGE", endpoint); err != nil {
-		LogErr(err, "pushIt err in pushMem")
-	}
-
-	memCacheNum := getBetween(memoryusage, `"cache"`, `"container_data"`)
-	if err := pushIt(fmt.Sprint(strconv.ParseInt(memCacheNum, 10, 64)), timestamp, "mem.cache", tags, containerId, "GAUGE", endpoint); err != nil {
+	if err := pushIt(memHotUsageNum, timestamp, "mem.memused.hot", tags, containerId, "GAUGE", endpoint); err != nil {
 		LogErr(err, "pushIt err in pushMem")
 	}
 
-	memRssNum := getBetween(memoryusage, `"rss"`, `"container_data"`)
-	if err := pushIt(fmt.Sprint(strconv.ParseInt(memRssNum, 10, 64)), timestamp, "mem.rss", tags, containerId, "GAUGE", endpoint); err != nil {
+	memCacheNum := getBetween(memoryusage, `"cache":`, `,"container_data"`)
+	if err := pushIt(memCacheNum, timestamp, "mem.cache", tags, containerId, "GAUGE", endpoint); err != nil {
 		LogErr(err, "pushIt err in pushMem")
 	}
 
-	failcntNum := getBetween(memoryusage, `"failcnt"`, `"container_data"`)
-	if err := pushIt(fmt.Sprint(strconv.ParseInt(failcntNum, 10, 64)), timestamp, "mem.failcnt.1m.rate", tags, containerId, "COUNTER", endpoint); err != nil {
+	memRssNum := getBetween(memoryusage, `"rss":`, `,"container_data"`)
+	if err := pushIt(memRssNum, timestamp, "mem.rss", tags, containerId, "GAUGE", endpoint); err != nil {
 		LogErr(err, "pushIt err in pushMem")
 	}
+
+	failcnt := getBetween(memoryusage, `"failcnt":`, `,"container_data"`)
+	if err := pushIt(failcnt, timestamp, "mem.failcnt.1m.rate", tags, containerId, "COUNTER", endpoint); err != nil {
+		LogErr(err, "pushIt err in pushMem")
+	}
+
 	return nil
 }
 
