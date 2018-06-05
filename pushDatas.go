@@ -109,7 +109,7 @@ func pushNet(networkuage1, networkuage2, timestamp, tags, containerId, endpoint 
 
 func pushMem(memLimit, memoryusage, timestamp, tags, containerId, endpoint string) error {
 	LogRun("pushMem")
-	memUsageNum := getBetween(memoryusage, `"usage":`, `,"working_set"`)
+	memUsageNum := getBetween(memoryusage, `"usage":`, `,"cache"`)
 	fenzi, _ := strconv.ParseInt(memUsageNum, 10, 64)
 	fenmu, err := strconv.ParseInt(memLimit, 10, 64)
 	if err == nil {
@@ -126,7 +126,7 @@ func pushMem(memLimit, memoryusage, timestamp, tags, containerId, endpoint strin
 		LogErr(err, "pushIt err in pushMem")
 	}
 
-	memHotUsageNum := getBetween(memoryusage, `"working_set":`, `,"container_data"`)
+	memHotUsageNum := getBetween(memoryusage, `"working_set":`, `,"failcnt"`)
 	memHotUsageInt, _ := strconv.ParseInt(memHotUsageNum, 10, 64)
 	memHotUsagePercent := float64(memHotUsageInt) / float64(fenmu)
 	if err := pushIt(fmt.Sprint(memHotUsagePercent), timestamp, "mem.memused.hot.percent", tags, containerId, "GAUGE", endpoint); err != nil {
@@ -136,18 +136,18 @@ func pushMem(memLimit, memoryusage, timestamp, tags, containerId, endpoint strin
 		LogErr(err, "pushIt err in pushMem")
 	}
 
-	memCacheNum := getBetween(memoryusage, `"cache":`, `,"container_data"`)
+	memCacheNum := getBetween(memoryusage, `"cache":`, `,"rss"`)
 	if err := pushIt(memCacheNum, timestamp, "mem.cache", tags, containerId, "GAUGE", endpoint); err != nil {
 		LogErr(err, "pushIt err in pushMem")
 	}
 
-	memRssNum := getBetween(memoryusage, `"rss":`, `,"container_data"`)
+	memRssNum := getBetween(memoryusage, `"rss":`, `,"swap"`)
 	if err := pushIt(memRssNum, timestamp, "mem.rss", tags, containerId, "GAUGE", endpoint); err != nil {
 		LogErr(err, "pushIt err in pushMem")
 	}
 
 	failcnt := getBetween(memoryusage, `"failcnt":`, `,"container_data"`)
-	if err := pushIt(failcnt, timestamp, "mem.failcnt", tags, containerId, "GAUGE", endpoint); err != nil {
+	if err := pushIt(failcnt, timestamp, "mem.failcnt.cnt", tags, containerId, "GAUGE", endpoint); err != nil {
 		LogErr(err, "pushIt err in pushMem")
 	}
 	if err := pushIt(failcnt, timestamp, "mem.failcnt.1m.rate", tags, containerId, "COUNTER", endpoint); err != nil {
