@@ -26,8 +26,12 @@ func getCpuNum(dockerdata string) {
 	}
 }
 
-func getTag() string {
+func getTag(DockerData string) string {
 	//FIXMI:some other message for container
+	tags := getBetween(DockerData, `"Tags=`, `",`)
+	if tags != "" {
+		return tags
+	}
 	return ""
 }
 
@@ -92,6 +96,17 @@ func getEndPoint(DockerData string) string {
 	endPoint := getBetween(DockerData, `"EndPoint=`, `",`)
 	if endPoint != "" {
 		return endPoint
+	}
+	// get endpoint from env MESOS_TASK_ID
+	mesos_task_id := getBetween(DockerData, `"MESOS_TASK_ID=`, `",`)
+	if mesos_task_id != "" {
+		// compatibility kamon push data
+		return strings.Replace(mesos_task_id, ".", "_", -1)
+	}
+	//get docker run --name
+	docker_name := getBetween(DockerData, `"Name":"`, `",`)
+	if docker_name != "" {
+		return docker_name
 	}
 	filepath := getBetween(DockerData, `"HostsPath":"`, `",`)
 	buf := make(map[int]string, 6)
